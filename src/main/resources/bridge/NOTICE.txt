@@ -1,0 +1,6 @@
+JustPlay bundles the unmodified Geyser Standalone 2.11.3 build 1251.
+Geyser provides all Bedrock/Java protocol translation.
+https://geysermc.org/
+https://github.com/GeyserMC/Geyser
+Geyser is MIT licensed; its jar retains upstream license notices.
+JustPlay is an independent project and is not endorsed by GeyserMC.
