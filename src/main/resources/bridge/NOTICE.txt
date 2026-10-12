@@ -1,0 +1,7 @@
+JustPlay bundles the unmodified Geyser Standalone Java 26.3 preview PR #6712 build 3095.
+Experimental upstream engine: https://github.com/GeyserMC/Geyser/pull/6712
+Geyser provides all Bedrock/Java protocol translation.
+https://geysermc.org/
+https://github.com/GeyserMC/Geyser
+Geyser is MIT licensed; its jar retains upstream license notices.
+JustPlay is an independent project and is not endorsed by GeyserMC.

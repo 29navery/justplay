@@ -11,17 +11,6 @@ repositories {
 	// for more information about repositories.
 }
 
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"modid" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-}
-
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -79,3 +68,34 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+def geyserFile = layout.buildDirectory.file('geyser/Geyser-Standalone.jar')
+tasks.register('downloadGeyser') {
+    outputs.file(geyserFile)
+    doLast {
+        def target = geyserFile.get().asFile
+        target.parentFile.mkdirs()
+        new URI('https://download.geysermc.org/v2/projects/geyserpreview/versions/pr.6712/builds/3095/downloads/standalone').toURL().withInputStream { input ->
+            target.withOutputStream { output -> output << input }
+        }
+        def digest = java.security.MessageDigest.getInstance('SHA-256')
+        target.withInputStream { input ->
+            byte[] buffer = new byte[8192]
+            int count
+            while ((count = input.read(buffer)) != -1) digest.update(buffer, 0, count)
+        }
+        if (digest.digest().encodeHex().toString() != '83d4b3acb990be93fbf2ebc968b4037f00154c08dc8e1b1aa324b95b06853de1') {
+            target.delete()
+            throw new GradleException('Geyser download checksum mismatch')
+        }
+    }
+}
+processResources {
+    dependsOn tasks.named('downloadGeyser')
+    from(geyserFile) { into 'bridge' }
+}
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+test { useJUnitPlatform() }
