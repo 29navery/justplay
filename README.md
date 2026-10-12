@@ -8,19 +8,32 @@ not an independent implementation of the two protocols.
 
 ## Compatibility status
 
-Bundled engine: official **Geyser Standalone 2.11.3 build 1251**, SHA-256 verified.
-Geyser's current documentation lists Java **26.2**, not 26.3. A successful mod
-build does not establish that Bedrock clients can join 26.3. Use an engine
-supporting 26.3, or a protocol compatibility mod specifically supporting the
-Java protocol emitted by your Geyser build. ViaFabric/ViaVersion may provide
-this when their version matrix supports it; arbitrary releases are not enough.
-Actual Bedrock login and gameplay require testing with compatible live clients.
+Bundled engine: official **Geyser Java 26.3 preview, PR #6712 build 3095**,
+SHA-256 verified. This engine includes Java 26.3 packet codecs and content
+mappings; it does not merely change the advertised version. It connects to the
+Java server as a **26.3** client, so ViaBackwards is not required solely to bridge
+Geyser's former 26.2 protocol to this server.
+
+**Experimental:** upstream's [26.3 update](https://github.com/GeyserMC/Geyser/pull/6712)
+is incomplete and warns against production use. Bedrock gameplay still needs
+live testing. Use a **26.3-compatible Floodgate build** if using Floodgate;
+upstream explicitly notes that Floodgate also needs updating.
+
+### Upgrade from JustPlay 1.0.0
+
+Stop the Java server normally and make sure its previous Geyser child has exited.
+Replace the old JustPlay jar in `mods/` with `justplay-1.1.0-beta.1+mc26.3.jar`.
+In `config/justplay/justplay.properties`, use `geyser-jar=bundled` to select the
+new engine (an explicit custom jar path continues to override the bundle).
+Existing Geyser/Floodgate settings are preserved. Restart once; the engine is
+extracted under a new version-specific filename, so the old jar isn't reused.
+Do not start extracted Geyser jars manually alongside JustPlay.
 
 ## Install
 
 1. Run a dedicated Minecraft 26.3 server with Java 25, Fabric Loader 0.19.5+
    and Fabric API for 26.3.
-2. Put `justplay-1.0.0+mc26.3.jar` in `mods/`. Geyser is bundled; do not install
+2. Put `justplay-1.1.0-beta.1+mc26.3.jar` in `mods/`. Geyser is bundled; do not install
    another Geyser listener on the same port.
 3. Start the server. JustPlay creates `config/justplay/`, extracts its engine,
    generates initial configuration and starts a separate Java process. Your
@@ -50,7 +63,7 @@ Floodgate is not bundled. See [Floodgate setup](https://geysermc.org/wiki/floodg
 - `config/justplay/justplay.properties`: `enabled=true`, `max-heap-mb=512`,
   `geyser-jar=bundled`. To use an updated engine, supply an absolute jar path
   or one relative to `config/justplay/`. It must support Geyser's `--nogui
-  --config` arguments and version-5 YAML schema.
+  --config` arguments and a compatible native YAML schema.
 - `config/justplay/config.yml`: native Geyser settings, generated once using
   the Java server's actual bind address and port. Existing settings are preserved.
   Update the target manually if the Java port/address changes afterward.
@@ -68,7 +81,7 @@ Run `bash gradlew build` with Java 25 (Windows: `gradlew.bat build`). The build
 fetches the pinned official engine, verifies SHA-256, and bundles it. Output:
 `build/libs/`. GitHub Actions also builds, tests and uploads workflow artifacts.
 Tests cover config validation, first-run targets, disabled mode, process
-start/stop/restart and preservation of user settings.
+start/stop/restart, preservation of user settings, and the bundled Java packet codec.
 
 ## License
 

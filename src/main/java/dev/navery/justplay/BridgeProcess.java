@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /** Runs Geyser outside Minecraft's class loader, with its own logs and working directory. */
 public final class BridgeProcess {
-    private static final String SHA256 = "5c9349f2dfc4c51e20f7711e6c05f6b57ecdefa742bc06765653e3f3ce4fb0b6";
+    private static final String SHA256 = "83d4b3acb990be93fbf2ebc968b4037f00154c08dc8e1b1aa324b95b06853de1";
     private final Path directory;
     private Process process;
     private Integer lastExit;
@@ -46,7 +46,7 @@ public final class BridgeProcess {
     }
 
     private Path extractBundledJar() throws IOException {
-        Path jar = directory.resolve("Geyser-Standalone-2.11.3-b1251.jar");
+        Path jar = directory.resolve("Geyser-Standalone-java26.3-pr6712-b3095.jar");
         if (Files.isRegularFile(jar) && checksum(jar).equals(SHA256)) return jar;
         Path temporary = Files.createTempFile(directory, "geyser-", ".tmp");
         try {

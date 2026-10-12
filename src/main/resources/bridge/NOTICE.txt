@@ -1,4 +1,5 @@
-JustPlay bundles the unmodified Geyser Standalone 2.11.3 build 1251.
+JustPlay bundles the unmodified Geyser Standalone Java 26.3 preview PR #6712 build 3095.
+Experimental upstream engine: https://github.com/GeyserMC/Geyser/pull/6712
 Geyser provides all Bedrock/Java protocol translation.
 https://geysermc.org/
 https://github.com/GeyserMC/Geyser
